@@ -4,6 +4,7 @@ node_js:
 - 10
 install:
 - npm i
+script: true
 deploy:
   provider: npm
   email: gautaz@users.noreply.github.com
