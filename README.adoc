@@ -1,0 +1,113 @@
+:source-highlighter: highlightjs
+:prettier-link: https://prettier.io/
+:husky-link: https://github.com/typicode/husky
+:eslint-link: https://eslint.org/
+
+= JS-RULES
+
+The R2D2 product stack is composed of multiple NodeJS micro-services.
+They need to be written with the same rules, and it's a lot of time spent maintaining every config file on all repositories.
+
+== How ?
+
+To do so we are using three tools:
+
+____
+What is {prettier-link}[Prettier]?
+An opinionated code formatter
+____
+
+This tool is responsible for the code format: comma, semicolon, width, that's for `Prettier`.
+
+____
+{eslint-link}[Eslint]
+Find and fix problems in your JavaScript code
+____
+
+A useless variable?
+`var`, `const` or `let`?
+All these conventions are settled by the `eslint` configuration.
+
+____
+{husky-link}[Husky] can prevent a bad git commit, git push and more 🐶 woof!
+____
+
+This tool allows us to easily share git hooks.
+We are using it with the previous ones to keep our code base safe from linting errors.
+
+=== On save
+
+==== Prettier
+
+When you save your file, you can ask your IDE to format your code for you.
+It will follow the rules described in the `.prettier.js` config file.
+
+In order to make it work you may need some plugins:
+
+* https://github.com/madskristensen/JavaScriptPrettier[VSCode]
+* https://github.com/prettier/vim-prettier[Vim]
+* You can find an IDE plugins list on {prettier-link}[Prettier]
+
+==== Eslint
+
+The exact same thing goes for eslint.
+You can ask your IDE to follow the rules specified in the https://github.com/r2d2bzh/eslint-config[`eslint-config`] repository.
+
+In order to make it work you may again need some plugins:
+
+* https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint[VSCode]
+* You can find an IDE plugins list on https://eslint.org/docs/user-guide/integrations[eslint documentation]
+
+NOTE: These are not mandatory but strongly recommended.
+
+=== On commit
+
+When you commit your code modifications, Husky ensures that the following git hook is run:
+
+[source,javascript]
+----
+include::./index.js[tag=pre-commit,indent=0]
+----
+
+Before committing `husky` calls `prettier` to format your code in case your IDE missed it.
+Then it will ask `eslint` to lint and fix your code.
+
+[IMPORTANT]
+====
+If an error is found during the validation the commit is canceled.
+You will have to first fix the lint errors before trying to commit again.
+====
+
+=== On push
+
+There is currently no action on push but you can add some hooks yourself if you want.
+
+You can add a `pre-push` action that will verify that the unit tests succeed, for instance:
+
+.huskyrc.js
+[source,js]
+----
+module.exports = {
+  hooks: {
+    ...require('js-rules')('husky')({
+      "pre-push": "docker-compose exec -T dev npm test"
+    }),
+  },
+};
+----
+
+== Install
+
+You need to add the following NPM development dependency to the project that needs to be checked:
+
+`npm install --save-dev @r2d2bzh/eslint-config`
+
+This will add the package `js-rules` to the dependencies of your repository.
+
+`js-rules` pulls the following dependencies so you don't have to do it yourself:
+
+package.json
+[source,js]
+----
+include::./package.json[lines=9..24]
+----
