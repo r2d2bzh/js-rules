@@ -1,10 +1,28 @@
 {
   "name": "@r2d2bzh/js-rules",
   "version": "0.0.0",
+  "description": "enforce r2d2bzh javascript rules",
   "main": "index.js",
-  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:r2d2bzh/js-rules.git"
+  },
+  "keywords": [
+    "javascript",
+    "rules",
+    "r2d2bzh"
+  ],
+  "author": "r2d2bzh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/r2d2bzh/js-rules/issues"
+  },
+  "homepage": "https://github.com/r2d2bzh/js-rules#readme",
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "husky": "4.2.3",
@@ -21,9 +39,5 @@
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-requirejs": "4.0.0",
     "eslint-plugin-standard": "4.0.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:r2d2bzh/js-rules.git"
   }
 }
