@@ -1,5 +1,5 @@
 {
-  "name": "js-rules",
+  "name": "@r2d2bzh/js-rules",
   "version": "0.1.1",
   "main": "index.js",
   "private": true,
