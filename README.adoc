@@ -100,7 +100,7 @@ module.exports = {
 
 You need to add the following NPM development dependency to the project that needs to be checked:
 
-`npm install --save-dev @r2d2bzh/eslint-config`
+`npm install --save-dev @r2d2bzh/js-rules`
 
 This will add the package `js-rules` to the dependencies of your repository.
 
