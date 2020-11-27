@@ -109,5 +109,5 @@ This will add the package `js-rules` to the dependencies of your repository.
 package.json
 [source,js]
 ----
-include::./package.json[lines=9..24]
+include::./package.json[tag=dependencies]
 ----
