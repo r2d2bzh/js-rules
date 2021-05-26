@@ -1,10 +1,10 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "enforce r2d2bzh javascript rules",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -26,20 +26,19 @@
   },
   "adoc-dependencies-tag": " tag::dependencies[] ",
   "dependencies": {
-    "husky": "4.2.3",
-    "prettier": "2.0.2",
-    "pretty-quick": "2.0.1",
-    "eslint": "6.8.0",
-    "@r2d2bzh/eslint-config": "0.0.0",
-    "eslint-config-prettier": "6.10.1",
-    "eslint-config-standard": "14.1.1",
-    "eslint-loader": "3.0.3",
-    "eslint-plugin-import": "2.20.2",
+    "@r2d2bzh/eslint-config": "0.2.0",
+    "eslint": "7.27.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-loader": "4.0.2",
+    "eslint-plugin-import": "2.23.3",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.1.2",
-    "eslint-plugin-promise": "4.2.1",
-    "eslint-plugin-requirejs": "4.0.0",
-    "eslint-plugin-standard": "4.0.1"
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-promise": "5.1.0",
+    "eslint-plugin-requirejs": "4.0.1",
+    "husky": "6.0.0",
+    "prettier": "2.3.0",
+    "pretty-quick": "3.1.0"
   },
   "adoc-dependencies-end": " end::dependencies[] "
 }
