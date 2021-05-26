@@ -1,10 +1,15 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "enforce r2d2bzh javascript rules",
+  "bin": {
+    "r2d2bzh-js-rules": "./bin.js"
+  },
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "eslint ."
+    "lint": "eslint .",
+    "test": "./bin.js && npm run lint"
   },
   "repository": {
     "type": "git",

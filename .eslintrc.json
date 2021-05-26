@@ -1,3 +1,5 @@
 {
-  "extends": ["@r2d2bzh"]
+  "extends": [
+    "@r2d2bzh"
+  ]
 }
