@@ -1,4 +1,5 @@
-__fixtures__helm
+__fixtures__
+helm
 *.json
 *.yml
 *.yaml

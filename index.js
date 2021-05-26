@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const packagejson = require('./package.json');
 
 const toJSON = (x) => JSON.stringify(x, null, 2);
-const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`);
+const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`, '');
 
 const eslintConfiguration = { extends: ['@r2d2bzh'] };
 const eslintIgnore = ['node_modules'];
