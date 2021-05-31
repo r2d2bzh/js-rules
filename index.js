@@ -13,13 +13,6 @@ const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\
 const eslintConfiguration = { extends: ['@r2d2bzh'] };
 const eslintIgnore = ['node_modules'];
 
-const preCommit = [
-  // tag::pre-commit[]
-  'npx --no pretty-quick --staged',
-  'npx --no eslint --fix .',
-  // end::pre-commit[]
-];
-
 const prettierConfiguration = {
   singleQuote: true,
   semi: true,
@@ -29,38 +22,57 @@ const prettierConfiguration = {
 const prettierIgnore = ['__fixtures__', 'helm', '*.json', '*.yml', '*.yaml'];
 
 const configurationFiles = {
-  eslint: {
-    '.eslintrc.json': toJSON(eslintConfiguration),
-    '.eslintignore': toMultiline(eslintIgnore),
+  '.eslintrc.json': {
+    configuration: eslintConfiguration,
+    formatters: [toJSON],
   },
-  prettier: {
-    '.prettierrc.json': toJSON(prettierConfiguration),
-    '.prettierignore': toMultiline(prettierIgnore),
+  '.eslintignore': {
+    configuration: eslintIgnore,
+    formatters: [toMultiline],
+  },
+  '.prettierrc.json': {
+    configuration: prettierConfiguration,
+    formatters: [toJSON],
+  },
+  '.prettierignore': {
+    configuration: prettierIgnore,
+    formatters: [toMultiline],
   },
 };
 
 const setConfiguration = (files) =>
   Promise.all(
-    Object.entries(files).map(async ([toolName, configFiles]) => {
-      await Promise.all(
-        Object.entries(configFiles).map(([name, data]) => fs.writeFile(path.join(process.cwd(), name), data))
-      );
-      console.log(
-        `${packagejson.name}[${packagejson.version}]: ${toolName} configuration deployed on ${process.cwd()}`
-      );
+    Object.entries(files).map(async ([name, { configuration, formatters }]) => {
+      const configurationPath = path.join(process.cwd(), name);
+      const content = formatters.reduce((content, format) => format(content), configuration);
+      await fs.writeFile(configurationPath, content);
+      console.log(`${packagejson.name}[${packagejson.version}]: ${configurationPath} configuration file deployed`);
     })
   );
 
-const setHusky = () => {
-  husky.install();
-  husky.set('.husky/pre-commit', '');
-  preCommit.forEach((command) => husky.add('.husky/pre-commit', command));
+const huskyHooks = {
+  'pre-commit': [
+    // tag::pre-commit[]
+    'npx --no pretty-quick --staged',
+    'npx --no eslint --fix .',
+    // end::pre-commit[]
+  ],
 };
 
-export const install = async () => {
+const setHuskyHooks = (hooks) => {
+  husky.install();
+  Object.entries(hooks).forEach(([name, commands]) => {
+    const hook = path.join(process.cwd(), '.husky', name);
+    husky.set(hook, '');
+    commands.forEach((command) => husky.add(hook, command));
+    console.log(`${packagejson.name}[${packagejson.version}]: ${hook} husky hook deployed`);
+  });
+};
+
+export const install = async (tweakConfigurationFiles = (f) => f, tweakHuskyHooks = (h) => h) => {
   try {
-    await setConfiguration(configurationFiles);
-    setHusky();
+    await setConfiguration(tweakConfigurationFiles(configurationFiles));
+    setHuskyHooks(tweakHuskyHooks(huskyHooks));
     console.log(`${packagejson.name}[${packagejson.version}] successfully deployed`);
   } catch (e) {
     console.error(`${packagejson.name}[${packagejson.version}] installation failed: ${e.message ? e.message : e}`);
