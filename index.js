@@ -53,8 +53,8 @@ const setConfiguration = (files) =>
 const huskyHooks = {
   'pre-commit': [
     // tag::pre-commit[]
-    'npx --no pretty-quick --staged',
-    'npx --no eslint --fix .',
+    'npx --no-install pretty-quick --staged',
+    'npx --no-install eslint --fix .',
     // end::pre-commit[]
   ],
 };
