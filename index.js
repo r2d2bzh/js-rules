@@ -6,6 +6,7 @@ import husky from 'husky';
 // JSON import is still experimental and "--experimental-json-modules" cannot be implied
 const require = createRequire(import.meta.url);
 const packagejson = require('./package.json');
+const logPreamble = `${packagejson.name}[${packagejson.version}]:`;
 
 const toJSON = (x) => JSON.stringify(x, null, 2);
 const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`, '');
@@ -46,7 +47,7 @@ const setConfiguration = (files) =>
       const configurationPath = path.join(process.cwd(), name);
       const content = formatters.reduce((content, format) => format(content), configuration);
       await fs.writeFile(configurationPath, content);
-      console.log(`${packagejson.name}[${packagejson.version}]: ${configurationPath} configuration file deployed`);
+      console.log(logPreamble, `${configurationPath} configuration file deployed`);
     })
   );
 
@@ -65,7 +66,7 @@ const setHuskyHooks = (hooks) => {
     const hook = path.join(process.cwd(), '.husky', name);
     husky.set(hook, '');
     commands.forEach((command) => husky.add(hook, command));
-    console.log(`${packagejson.name}[${packagejson.version}]: ${hook} husky hook deployed`);
+    console.log(logPreamble, `${hook} husky hook deployed`);
   });
 };
 
@@ -73,9 +74,9 @@ export const install = async (tweakConfigurationFiles = (f) => f, tweakHuskyHook
   try {
     await setConfiguration(tweakConfigurationFiles(configurationFiles));
     setHuskyHooks(tweakHuskyHooks(huskyHooks));
-    console.log(`${packagejson.name}[${packagejson.version}] successfully deployed`);
+    console.log(logPreamble, `successfully deployed`);
   } catch (e) {
-    console.error(`${packagejson.name}[${packagejson.version}] installation failed: ${e.message ? e.message : e}`);
+    console.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
     throw e;
   }
 };
