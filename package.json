@@ -1,6 +1,6 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "enforce r2d2bzh javascript rules",
   "bin": {
     "r2d2bzh-js-rules": "./bin.js"
@@ -42,6 +42,7 @@
     "eslint-plugin-promise": "5.1.0",
     "eslint-plugin-requirejs": "4.0.1",
     "husky": "6.0.0",
+    "js-yaml": "^3.14.1",
     "prettier": "2.3.1",
     "pretty-quick": "3.1.0"
   },
