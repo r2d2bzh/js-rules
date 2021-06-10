@@ -44,13 +44,13 @@ const configurationFiles = (editWarning) => ({
   },
 });
 
-const setConfiguration = (logPreamble) => (files) =>
+const setConfiguration = (logStep) => (files) =>
   Promise.all(
     Object.entries(files).map(async ([name, { configuration, formatters }]) => {
       const configurationPath = path.join(process.cwd(), name);
       const content = formatters.reduce((content, format) => format(content), configuration);
       await fs.writeFile(configurationPath, content);
-      console.log(logPreamble, `${configurationPath} configuration file deployed`);
+      logStep(`${configurationPath} configuration file deployed`);
     })
   );
 
@@ -63,13 +63,13 @@ const huskyHooks = {
   ],
 };
 
-const setHuskyHooks = (logPreamble) => (hooks) => {
+const setHuskyHooks = (logStep) => (hooks) => {
   husky.install();
   Object.entries(hooks).forEach(([name, commands]) => {
     const hook = path.join(process.cwd(), '.husky', name);
     husky.set(hook, '');
     commands.forEach((command) => husky.add(hook, command));
-    console.log(logPreamble, `${hook} husky hook deployed`);
+    logStep(`${hook} husky hook deployed`);
   });
 };
 
@@ -78,13 +78,16 @@ export const install = async ({
   logPreamble = defaultLogPreamble,
   tweakConfigurationFiles = (f) => f,
   tweakHuskyHooks = (h) => h,
+  stepLogger = console,
+  resultLogger = console,
 } = {}) => {
   try {
-    await setConfiguration(logPreamble)(tweakConfigurationFiles(configurationFiles(editWarning)));
-    setHuskyHooks(logPreamble)(tweakHuskyHooks(huskyHooks));
-    console.log(logPreamble, `successfully deployed`);
+    const logStep = (...args) => stepLogger.log(logPreamble, ...args);
+    await setConfiguration(logStep)(tweakConfigurationFiles(configurationFiles(editWarning)));
+    setHuskyHooks(logStep)(tweakHuskyHooks(huskyHooks));
+    resultLogger.log(logPreamble, `successfully deployed`);
   } catch (e) {
-    console.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
+    resultLogger.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
     throw e;
   }
 };
