@@ -91,3 +91,9 @@ export const install = async ({
     throw e;
   }
 };
+
+export default {
+  install,
+  toIgnore,
+  toYAML,
+};
