@@ -88,8 +88,8 @@ export const install = async ({
 } = {}) => {
   try {
     const logStep = (...args) => stepLogger.log(logPreamble, ...args);
-    await setConfiguration(logStep)(tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
-    setHuskyHooks(logStep)(tweakHuskyHooks(huskyHooks));
+    await setConfiguration(logStep)(await tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
+    setHuskyHooks(logStep)(await tweakHuskyHooks(huskyHooks));
     resultLogger.log(logPreamble, `successfully deployed`);
   } catch (e) {
     resultLogger.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
