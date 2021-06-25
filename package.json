@@ -1,6 +1,6 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "enforce r2d2bzh javascript rules",
   "bin": {
     "r2d2bzh-js-rules": "./bin.js"
@@ -34,7 +34,7 @@
   },
   "adoc-dependencies-tag": " tag::dependencies[] ",
   "dependencies": {
-    "@r2d2bzh/eslint-config": "0.3.1",
+    "@r2d2bzh/eslint-config": "0.3.2",
     "eslint": "7.29.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
