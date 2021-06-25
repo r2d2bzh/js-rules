@@ -1,12 +1,15 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "enforce r2d2bzh javascript rules",
   "bin": {
     "r2d2bzh-js-rules": "./bin.js"
   },
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "scripts": {
     "lint": "eslint .",
     "test": "./bin.js && npm run lint"
@@ -31,8 +34,8 @@
   },
   "adoc-dependencies-tag": " tag::dependencies[] ",
   "dependencies": {
-    "@r2d2bzh/eslint-config": "0.2.0",
-    "eslint": "7.28.0",
+    "@r2d2bzh/eslint-config": "0.3.1",
+    "eslint": "7.29.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
     "eslint-loader": "4.0.2",
@@ -40,12 +43,11 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-promise": "5.1.0",
-    "eslint-plugin-requirejs": "4.0.1",
-    "find-up": "^2.1.0",
+    "find-up": "^5.0.0",
     "husky": "6.0.0",
-    "js-yaml": "^3.14.1",
+    "js-yaml": "^4.1.0",
     "prettier": "2.3.1",
-    "pretty-quick": "3.1.0"
+    "pretty-quick": "3.1.1"
   },
   "adoc-dependencies-end": " end::dependencies[] "
 }
