@@ -1,6 +1,6 @@
 import fs from 'fs';
-import git from 'isomorphic-git';
+import { currentBranch } from 'isomorphic-git';
 
 const isWIP = /(^|.*\/)wip\//i;
 
-export default async (dir) => isWIP.test(await git.currentBranch({ fs, dir }));
+export default async (dir) => isWIP.test(await currentBranch({ fs, dir }));
