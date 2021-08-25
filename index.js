@@ -80,8 +80,7 @@ const setConfiguration = (logStep) => (files) =>
 const huskyHooks = {
   'pre-commit': [
     // tag::pre-commit[]
-    'npx --no-install pretty-quick --staged',
-    'npx --no-install eslint --fix .',
+    'npx --no-install eslint .',
     // end::pre-commit[]
   ],
   'pre-push': [

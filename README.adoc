@@ -108,8 +108,7 @@ When you commit your code modifications, Husky ensures that the following comman
 include::./index.js[tag=pre-commit,indent=0]
 ----
 
-Before committing `husky` calls `prettier` to format your code in case your IDE missed it.
-Then it will ask `eslint` to lint and fix your code.
+The hook will simply ensure that the project's source code complies with the `eslint` configuration.
 
 [IMPORTANT]
 ====
