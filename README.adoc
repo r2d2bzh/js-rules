@@ -14,7 +14,7 @@ endif::[]
 :husky-link: https://github.com/typicode/husky
 :eslint-link: https://eslint.org/
 
-= JS-RULES
+= js-rules
 
 The R2D2 product stack is composed of multiple NodeJS micro-services.
 They need to be written with the same rules, and it's a lot of time spent maintaining every config file on all repositories.
@@ -101,11 +101,11 @@ NOTE: These are not mandatory but strongly recommended.
 
 === On commit
 
-When you commit your code modifications, Husky ensures that the following commands are launched by a pre-commit git hook:
+When you commit your code modifications, the following `husky` hook will be executed:
 
-[source,javascript]
+[source,sh]
 ----
-include::./index.js[tag=pre-commit,indent=0]
+include::.husky/pre-commit[]
 ----
 
 The hook will simply ensure that the project's source code complies with the `eslint` configuration.
@@ -118,14 +118,14 @@ You will have to first fix the lint errors before trying to commit again.
 
 === On push
 
-The following commands are executed on push:
+`js-rules` will also ensure that the following `husky` hook is used on push:
 
-[source,javascript]
+[source,sh]
 ----
-include::./index.js[tag=pre-push,indent=0]
+include::.husky/pre-push[]
 ----
 
-So as long as the current branch name of your project does not reflect a work in progress, tests are executed on push.
+So as long as the current branch name of your project does not reflect a work in progress, linting and tests are executed on push.
 
 [NOTE]
 ====
@@ -134,5 +134,5 @@ The convention applied to tell that a branch holds a work in progress is that it
 * `wip/other/branch/name/items`
 * `.../wip/other/branch/name/items`
 
-`wip` is case-insensitive, `WIP` or `wIp` work as well.
+`wip` is case-insensitive, `WIP`, `wIp` or any other combination work as well.
 ====
