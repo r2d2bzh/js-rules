@@ -18,7 +18,7 @@ export const extractPackageDetails = async (url, extract = (x) => x) => {
     const packageJSONPath = await findUp('package.json', { cwd: path.dirname(new URL(url).pathname) });
     return extract(await readJSONFile(packageJSONPath));
   } catch (e) {
-    console.error('Unable to get ${url} package details:', e.message);
+    console.error(`Unable to get ${url} package details:`, e.message);
     throw e;
   }
 };
@@ -30,7 +30,7 @@ const jsRulesStrings = () =>
   }));
 
 export const toYAML = (x) => yaml.dump(x);
-export const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`, ``);
+export const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`, '');
 export const addHeader =
   (prefix = '', postfix = '\n') =>
   (header = '') =>
@@ -113,7 +113,7 @@ const _install = async ({
     const logStep = (...args) => stepLogger.log(logPreamble, ...args);
     await setConfiguration(logStep)(await tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
     setHuskyHooks(logStep)(await tweakHuskyHooks(huskyHooks));
-    resultLogger.log(logPreamble, `successfully deployed`);
+    resultLogger.log(logPreamble, 'successfully deployed');
   } catch (e) {
     resultLogger.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
     throw e;
