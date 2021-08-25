@@ -84,6 +84,11 @@ const huskyHooks = {
     'npx --no-install eslint --fix .',
     // end::pre-commit[]
   ],
+  'pre-push': [
+    // tag::pre-push[]
+    'npx --no-install r2d2bzh-js-rules isWip || npm test',
+    // end::pre-push[]
+  ],
 };
 
 const setHuskyHooks = (logStep) => (hooks) => {

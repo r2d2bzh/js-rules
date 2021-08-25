@@ -45,9 +45,11 @@
     "eslint-plugin-promise": "5.1.0",
     "find-up": "^5.0.0",
     "husky": "6.0.0",
+    "isomorphic-git": "^1.10.0",
     "js-yaml": "^4.1.0",
     "prettier": "2.3.1",
-    "pretty-quick": "3.1.1"
+    "pretty-quick": "3.1.1",
+    "yargs": "^17.1.1"
   },
   "adoc-dependencies-end": " end::dependencies[] "
 }

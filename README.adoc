@@ -1,4 +1,15 @@
 :source-highlighter: highlightjs
+
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
 :prettier-link: https://prettier.io/
 :husky-link: https://github.com/typicode/husky
 :eslint-link: https://eslint.org/
@@ -104,4 +115,25 @@ Then it will ask `eslint` to lint and fix your code.
 ====
 If an error is found during the validation the commit is canceled.
 You will have to first fix the lint errors before trying to commit again.
+====
+
+=== On push
+
+The following commands are executed on push:
+
+[source,javascript]
+----
+include::./index.js[tag=pre-push,indent=0]
+----
+
+So as long as the current branch name of your project does not reflect a work in progress, tests are executed on push.
+
+[NOTE]
+====
+The convention applied to tell that a branch holds a work in progress is that its name is of the form:
+
+* `wip/other/branch/name/items`
+* `.../wip/other/branch/name/items`
+
+`wip` is case-insensitive, `WIP` or `wIp` work as well.
 ====
