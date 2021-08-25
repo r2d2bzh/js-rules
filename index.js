@@ -117,14 +117,14 @@ const _install = async ({
   }
 };
 
-export const install = async ({ logPreamble, editWarning, logger = console, ...options } = {}) => {
+export const install = async ({ logger = console, ...options } = {}) => {
   const { defaultLogPreamble, defaultEditWarning } = await jsRulesStrings(logger);
   return _install({
-    ...options,
-    editWarning: editWarning || defaultEditWarning,
-    logPreamble: logPreamble || defaultLogPreamble,
     stepLogger: logger,
     resultLogger: logger,
+    editWarning: defaultEditWarning,
+    logPreamble: defaultLogPreamble,
+    ...options,
   });
 };
 
