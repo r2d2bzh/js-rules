@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import husky from 'husky';
 import yaml from 'js-yaml';
-import findUp from 'find-up';
+import { findUp } from 'find-up';
 
 export const readJSONFile = async (path) => {
   try {
