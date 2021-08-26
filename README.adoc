@@ -105,7 +105,7 @@ When you commit your code modifications, the following `husky` hook will be exec
 
 [source,sh]
 ----
-include::.husky/pre-commit[]
+include::.husky/pre-commit[tag=commands]
 ----
 
 The hook will simply ensure that the project's source code complies with the `eslint` configuration.
@@ -122,7 +122,7 @@ You will have to first fix the lint errors before trying to commit again.
 
 [source,sh]
 ----
-include::.husky/pre-push[]
+include::.husky/pre-push[tag=commands]
 ----
 
 So as long as the current branch name of your project does not reflect a work in progress, linting and tests are executed on push.

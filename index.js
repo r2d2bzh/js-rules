@@ -82,10 +82,11 @@ const setConfiguration = (logStep) => (files) =>
   );
 
 const lintCommand = 'npx --no-install eslint .';
+const addAdocTag = (commands) => ['# tag::commands[]', commands, '# end::commands[]'];
 
 const huskyHooks = {
-  'pre-commit': [lintCommand],
-  'pre-push': [`npx --no-install r2d2bzh-js-rules isWip || ${lintCommand} && npm test`],
+  'pre-commit': addAdocTag([lintCommand]),
+  'pre-push': addAdocTag([`npx --no-install r2d2bzh-js-rules isWip || ${lintCommand} && npm test`]),
 };
 
 const setHuskyHooks = (logStep) => (hooks) => {
