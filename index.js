@@ -6,6 +6,8 @@ import { findUp } from 'find-up';
 
 export const readJSONFile = async (path) => {
   try {
+    // The purpose of this library is to scaffold based on existing project content
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const json = await fs.readFile(path, { encoding: 'utf8' });
     return JSON.parse(json);
   } catch (e) {
@@ -76,6 +78,8 @@ const setConfiguration = (logStep) => (files) =>
   Promise.all(
     Object.entries(files).map(async ([configurationPath, { configuration, formatters }]) => {
       const content = formatters.reduce((content, format) => format(content), configuration);
+      // The modified file location depends on the structure of the project being scaffolded
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(configurationPath, content);
       logStep(`${configurationPath} deployed`);
     })
