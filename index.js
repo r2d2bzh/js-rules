@@ -90,7 +90,7 @@ const addAdocTag = (commands) => ['# tag::commands[]', commands, '# end::command
 
 const huskyHooks = {
   'pre-commit': addAdocTag([lintCommand]),
-  'pre-push': addAdocTag([`npx --no-install r2d2bzh-js-rules isWip || ${lintCommand} && npm test`]),
+  'pre-push': addAdocTag([`npx --no-install r2d2bzh-js-rules isWIP || ${lintCommand} && npm test`]),
 };
 
 const setHuskyHooks = (logStep) => (hooks) => {
