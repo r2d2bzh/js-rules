@@ -44,7 +44,13 @@ export const addHeader =
     `${prefix}${header}${postfix}${content}`;
 export const addHashedHeader = addHeader('# ');
 
-const eslintConfiguration = { extends: ['@r2d2bzh'] };
+const eslintConfiguration = {
+  extends: ['@r2d2bzh'],
+  settings: {
+    // avoid https://github.com/import-js/eslint-plugin-import/issues/2352 for ava 4.0
+    'import/core-modules': ['ava'],
+  },
+};
 const eslintIgnore = ['node_modules'];
 
 const prettierConfiguration = {
