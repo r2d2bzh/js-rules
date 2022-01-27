@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import process from 'process';
+import process from 'node:process';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { install } from './index.js';

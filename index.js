@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import husky from 'husky';
 import yaml from 'js-yaml';
 import { findUp } from 'find-up';
@@ -8,10 +8,10 @@ export const readJSONFile = async (path) => {
   try {
     // The purpose of this library is to scaffold based on existing project content
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const json = await fs.readFile(path, { encoding: 'utf8' });
+    const json = await fs.readFile(path);
     return JSON.parse(json);
-  } catch (e) {
-    throw new Error(`failed to extract JSON from ${path} (${e.message})`);
+  } catch (error) {
+    throw new Error(`failed to extract JSON from ${path} (${error.message})`);
   }
 };
 
@@ -19,9 +19,9 @@ export const extractPackageDetails = async ({ url, extract = (x) => x, logger })
   try {
     const packageJSONPath = await findUp('package.json', { cwd: path.dirname(new URL(url).pathname) });
     return extract(await readJSONFile(packageJSONPath));
-  } catch (e) {
-    logger.error(`Unable to get ${url} package details:`, e.message);
-    throw e;
+  } catch (error) {
+    logger.error(`Unable to get ${url} package details:`, error.message);
+    throw error;
   }
 };
 
@@ -36,7 +36,7 @@ const jsRulesStrings = (logger) =>
   });
 
 export const toYAML = (x) => yaml.dump(x);
-export const toMultiline = (array) => array.reduce((acc, current) => `${acc}${current}\n`, '');
+export const toMultiline = (array) => `${array.join('\n')}\n`;
 export const addHeader =
   (prefix = '', postfix = '\n') =>
   (header = '') =>
@@ -83,7 +83,10 @@ const configurationFiles = (addWarningHeader) => ({
 const setConfiguration = (logStep) => (files) =>
   Promise.all(
     Object.entries(files).map(async ([configurationPath, { configuration, formatters }]) => {
-      const content = formatters.reduce((content, format) => format(content), configuration);
+      let content = configuration;
+      for (const format of formatters) {
+        content = format(content);
+      }
       // The modified file location depends on the structure of the project being scaffolded
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(configurationPath, content);
@@ -101,12 +104,14 @@ const huskyHooks = {
 
 const setHuskyHooks = (logStep) => (hooks) => {
   husky.install();
-  Object.entries(hooks).forEach(([name, commands]) => {
+  for (const [name, commands] of Object.entries(hooks)) {
     const hook = path.join('.husky', name);
     husky.set(hook, '');
-    commands.forEach((command) => husky.add(hook, command));
+    for (const command of commands) {
+      husky.add(hook, command);
+    }
     logStep(`${hook} deployed`);
-  });
+  }
 };
 
 const _install = async ({
@@ -118,13 +123,13 @@ const _install = async ({
   resultLogger,
 } = {}) => {
   try {
-    const logStep = (...args) => stepLogger.log(logPreamble, ...args);
+    const logStep = (...arguments_) => stepLogger.log(logPreamble, ...arguments_);
     await setConfiguration(logStep)(await tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
     setHuskyHooks(logStep)(await tweakHuskyHooks(huskyHooks));
     resultLogger.log(logPreamble, 'successfully deployed');
-  } catch (e) {
-    resultLogger.error(logPreamble, `installation failed: ${e.message ? e.message : e}`);
-    throw e;
+  } catch (error) {
+    resultLogger.error(logPreamble, `installation failed: ${error.message ? error.message : error}`);
+    throw error;
   }
 };
 
