@@ -39,9 +39,17 @@ export const toYAML = (x) => yaml.dump(x);
 export const toMultiline = (array) => `${array.join('\n')}\n`;
 export const addHeader =
   (prefix = '', postfix = '\n') =>
-  (header = '') =>
-  (content = '') =>
-    `${prefix}${header}${postfix}${content}`;
+  (header = '') => {
+    const iterableHeader =
+      Symbol.iterator in new Object(header) && Object.prototype.toString.call(header) !== '[object String]'
+        ? header
+        : [header];
+    let formattedHeader = '';
+    for (const header_ of iterableHeader) {
+      formattedHeader += `${`${prefix}${header_}`.trimEnd()}${postfix}`;
+    }
+    return (content = '') => `${formattedHeader}${content}`;
+  };
 export const addHashedHeader = addHeader('# ');
 
 const eslintConfiguration = {
