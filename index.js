@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import husky from 'husky';
+import { configure as configureHusky } from '@gautaz/husky';
 import yaml from 'js-yaml';
 import { findUp } from 'find-up';
 
@@ -103,51 +103,59 @@ const setConfiguration = (logStep) => (files) =>
   );
 
 const lintCommand = 'npx --no-install eslint .';
-const addAdocTag = (commands) => ['# tag::commands[]', commands, '# end::commands[]'];
+const addAdocTag = (commands) => ['# tag::commands[]', ...commands, '# end::commands[]'];
 
 const huskyHooks = {
   'pre-commit': addAdocTag([lintCommand]),
   'pre-push': addAdocTag([`npx --no-install r2d2bzh-js-rules isWIP || ${lintCommand} && npm test`]),
 };
 
-const setHuskyHooks = (logStep) => (hooks) => {
-  husky.install();
-  for (const [name, commands] of Object.entries(hooks)) {
-    const hook = path.join('.husky', name);
-    husky.set(hook, '');
-    for (const command of commands) {
-      husky.add(hook, command);
+const setHuskyHooks = (logger) => {
+  const husky = configureHusky({
+    log: logger.log.bind(logger),
+    error: logger.error.bind(logger),
+  });
+  return (hooks) => {
+    husky.install();
+    for (const [name, commands] of Object.entries(hooks)) {
+      const hook = path.join('.husky', name);
+      husky.set(hook, '');
+      for (const command of commands) {
+        husky.add(hook, command);
+      }
+      logger.log(`${hook} deployed`);
     }
-    logStep(`${hook} deployed`);
-  }
+  };
 };
 
 const _install = async ({
   editWarning,
-  logPreamble,
   tweakConfigurationFiles = (f) => f,
   tweakHuskyHooks = (h) => h,
-  stepLogger,
-  resultLogger,
+  logger,
 } = {}) => {
   try {
-    const logStep = (...arguments_) => stepLogger.log(logPreamble, ...arguments_);
+    const logStep = (...arguments_) => logger.log(...arguments_);
     await setConfiguration(logStep)(await tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
-    setHuskyHooks(logStep)(await tweakHuskyHooks(huskyHooks));
-    resultLogger.log(logPreamble, 'successfully deployed');
+    setHuskyHooks(logger)(await tweakHuskyHooks(huskyHooks));
+    logger.log('successfully deployed');
   } catch (error) {
-    resultLogger.error(logPreamble, `installation failed: ${error.message ? error.message : error}`);
+    logger.error(`installation failed: ${error.message ? error.message : error}`);
     throw error;
   }
 };
 
-export const install = async ({ logger = console, ...options } = {}) => {
-  const { defaultLogPreamble, defaultEditWarning } = await jsRulesStrings(logger);
+export const install = async ({ logger, ...options } = {}) => {
+  const defaultLogger = console;
+  const { defaultLogPreamble, defaultEditWarning } = await jsRulesStrings(logger || defaultLogger);
+  const defaultLoggerWithPreamble = {
+    log: (...arguments_) => defaultLogger.log(defaultLogPreamble, ...arguments_),
+    warn: (...arguments_) => defaultLogger.warn(defaultLogPreamble, ...arguments_),
+    error: (...arguments_) => defaultLogger.error(defaultLogPreamble, ...arguments_),
+  };
   return _install({
-    stepLogger: logger,
-    resultLogger: logger,
+    logger: logger || defaultLoggerWithPreamble,
     editWarning: defaultEditWarning,
-    logPreamble: defaultLogPreamble,
     ...options,
   });
 };
