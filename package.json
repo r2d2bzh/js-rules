@@ -35,7 +35,7 @@
   "adoc-dependencies-tag": " tag::dependencies[] ",
   "dependencies": {
     "@gautaz/husky": "^7.0.4-rel.3",
-    "@r2d2bzh/eslint-config": "^0.6.0-alpha.6",
+    "@r2d2bzh/eslint-config": "^0.6.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-ava": "^13.2.0",
