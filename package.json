@@ -43,7 +43,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-unicorn": "^40.1.0",
+    "eslint-plugin-unicorn": "^42.0.0",
     "find-up": "^6.2.0",
     "isomorphic-git": "^1.11.0",
     "js-yaml": "^4.1.0",
