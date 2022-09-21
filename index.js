@@ -140,7 +140,7 @@ const _install = async ({
     setHuskyHooks(logger)(await tweakHuskyHooks(huskyHooks));
     logger.log('successfully deployed');
   } catch (error) {
-    logger.error(`installation failed: ${error.message ? error.message : error}`);
+    logger.error(`installation failed: ${error.message ?? error}`);
     throw error;
   }
 };
