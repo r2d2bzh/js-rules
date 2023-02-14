@@ -59,7 +59,7 @@ const eslintConfiguration = {
     'import/core-modules': ['ava'],
   },
 };
-const eslintIgnore = ['node_modules'];
+const eslintIgnore = ['node_modules', 'coverage'];
 
 const prettierConfiguration = {
   singleQuote: true,
