@@ -35,20 +35,20 @@
   "adoc-dependencies-tag": " tag::dependencies[] ",
   "dependencies": {
     "@gautaz/husky": "^8.0.1-rel.0",
-    "@r2d2bzh/eslint-config": "^1.0.1",
-    "eslint": "^8.17.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-ava": "^13.2.0",
-    "eslint-plugin-import": "^2.25.4",
+    "@r2d2bzh/eslint-config": "^1.0.2",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-ava": "^14.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-security": "^1.5.0",
-    "eslint-plugin-unicorn": "^43.0.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-unicorn": "^45.0.2",
     "find-up": "^6.2.0",
     "isomorphic-git": "^1.17.3",
     "js-yaml": "^4.1.0",
-    "prettier": "^2.5.1",
-    "yargs": "^17.5.1"
+    "prettier": "^2.8.4",
+    "yargs": "^17.6.2"
   },
   "adoc-dependencies-end": " end::dependencies[] "
 }
