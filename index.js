@@ -99,7 +99,7 @@ const setConfiguration = (logStep) => (files) =>
       // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(configurationPath, content);
       logStep(`${configurationPath} deployed`);
-    })
+    }),
   );
 
 const lintCommand = 'npx --no-install eslint .';
