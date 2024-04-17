@@ -3,4 +3,6 @@ import { currentBranch } from 'isomorphic-git';
 
 const isWIP = /(^|.*\/)wip\//i;
 
-export default async (directory) => isWIP.test(await currentBranch({ fs, dir: directory }));
+const isCurrentBranchWIP = async (directory) => isWIP.test(await currentBranch({ fs, dir: directory }));
+
+export default isCurrentBranchWIP;
