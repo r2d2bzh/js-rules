@@ -7,7 +7,6 @@ import { findUp } from 'find-up';
 export const readJSONFile = async (path) => {
   try {
     // The purpose of this library is to scaffold based on existing project content
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const json = await fs.readFile(path);
     return JSON.parse(json);
   } catch (error) {
@@ -51,15 +50,7 @@ export const addHeader =
     return (content = '') => `${formattedHeader}${content}`;
   };
 export const addHashedHeader = addHeader('# ');
-
-const eslintConfiguration = {
-  extends: ['@r2d2bzh'],
-  settings: {
-    // avoid https://github.com/import-js/eslint-plugin-import/issues/2352 for ava 4.0
-    'import/core-modules': ['ava'],
-  },
-};
-const eslintIgnore = ['node_modules', 'coverage'];
+export const addSlashHeader = addHeader('// ');
 
 const prettierConfiguration = {
   singleQuote: true,
@@ -69,24 +60,25 @@ const prettierConfiguration = {
 };
 const prettierIgnore = ['__fixtures__', 'helm', '*.json', '*.yml', '*.yaml'];
 
-const configurationFiles = (addWarningHeader) => ({
-  '.eslintrc.yaml': {
-    configuration: eslintConfiguration,
-    formatters: [toYAML, addWarningHeader],
-  },
-  '.eslintignore': {
-    configuration: eslintIgnore,
-    formatters: [toMultiline, addWarningHeader],
-  },
-  '.prettierrc.yaml': {
-    configuration: prettierConfiguration,
-    formatters: [toYAML, addWarningHeader],
-  },
-  '.prettierignore': {
-    configuration: prettierIgnore,
-    formatters: [toMultiline, addWarningHeader],
-  },
-});
+const configurationFiles = async (addWarningHeader, addJsWarningHeader) => {
+  const eslintTemplate = await fs.readFile(
+    `${path.dirname(new URL(import.meta.url).pathname)}/template.eslint.config.js`,
+  );
+  return {
+    'eslint.config.js': {
+      configuration: eslintTemplate.toString(),
+      formatters: [addJsWarningHeader],
+    },
+    '.prettierrc.yaml': {
+      configuration: prettierConfiguration,
+      formatters: [toYAML, addWarningHeader],
+    },
+    '.prettierignore': {
+      configuration: prettierIgnore,
+      formatters: [toMultiline, addWarningHeader],
+    },
+  };
+};
 
 const setConfiguration = (logStep) => (files) =>
   Promise.all(
@@ -96,7 +88,6 @@ const setConfiguration = (logStep) => (files) =>
         content = format(content);
       }
       // The modified file location depends on the structure of the project being scaffolded
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(configurationPath, content);
       logStep(`${configurationPath} deployed`);
     }),
@@ -128,16 +119,29 @@ const setHuskyHooks = (logger) => {
   };
 };
 
-const _install = async ({
-  editWarning,
-  tweakConfigurationFiles = (f) => f,
-  tweakHuskyHooks = (h) => h,
-  logger,
-} = {}) => {
+const fileExists = async (path) => {
+  try {
+    await fs.access(path);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const showEslintWarning = async (logger) => {
+  if ((await fileExists('.eslintrc.yaml')) || (await fileExists('.eslintignore')))
+    logger.warn(
+      '\x1b[33m!! Please remove .eslintrc.yaml and .eslintignore files which are now ignored by Eslint v9 !!\x1b[0m',
+    );
+};
+
+const _install = async ({ editWarning, tweakConfigurationFiles = (f) => f, tweakHuskyHooks = (h) => h, logger }) => {
   try {
     const logStep = (...arguments_) => logger.log(...arguments_);
-    await setConfiguration(logStep)(await tweakConfigurationFiles(configurationFiles(addHashedHeader(editWarning))));
+    const confFiles = await configurationFiles(addHashedHeader(editWarning), addSlashHeader(editWarning));
+    await setConfiguration(logStep)(await tweakConfigurationFiles(confFiles));
     setHuskyHooks(logger)(await tweakHuskyHooks(huskyHooks));
+    await showEslintWarning(logger);
     logger.log('successfully deployed');
   } catch (error) {
     logger.error(`installation failed: ${error.message ?? error}`);

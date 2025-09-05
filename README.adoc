@@ -99,6 +99,13 @@ In order to make it work you may again need some plugins:
 
 NOTE: These are not mandatory but strongly recommended.
 
+The current set of rules provided by this shared configuration follows:
+
+[source,js]
+----
+include::template.eslint.config.js[tag=rules]
+----
+
 === On commit
 
 When you commit your code modifications, the following `husky` hook will be executed:
