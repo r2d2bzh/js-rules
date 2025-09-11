@@ -12,7 +12,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "./bin.js && npm run lint"
+    "test": "./bin.js && npm run lint",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,8 @@
   "adoc-dependencies-end": " end::dependencies[] ",
   "devDependencies": {
     "eslint": "^9.34.0",
-    "@r2d2bzh/eslint-config": "^2.0.1"
+    "@r2d2bzh/eslint-config": "^2.0.1",
+    "release-it": "^19.0.4",
+    "@release-it/conventional-changelog": "^10.0.1"
   }
 }
