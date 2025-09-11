@@ -23,7 +23,7 @@ They need to be written with the same rules, and it's a lot of time spent mainta
 
 You need to add the following NPM development dependency to the project that needs to be checked:
 
-`npm install --save-dev @r2d2bzh/js-rules`
+`npm install --save-dev @r2d2bzh/js-rules eslint @r2d2bzh/eslint-config`
 
 Once installed, `@r2d2bzh/js-rules` provides the `r2d2bzh-js-rules` executable from the https://docs.npmjs.com/cli/v7/configuring-npm/folders#executables[node_modules executables].
 You have to call `r2d2bzh-js-rules` from the https://docs.npmjs.com/cli/v7/using-npm/scripts[postinstall script] of the `package.json` file of your project:
@@ -98,13 +98,6 @@ In order to make it work you may again need some plugins:
 * You can find an IDE plugins list on https://eslint.org/docs/user-guide/integrations[eslint documentation]
 
 NOTE: These are not mandatory but strongly recommended.
-
-The current set of rules provided by this shared configuration follows:
-
-[source,js]
-----
-include::template.eslint.config.js[tag=rules]
-----
 
 === On commit
 
