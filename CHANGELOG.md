@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/r2d2bzh/js-rules/compare/2.0.0...2.0.1) (2025-09-11)
+
+
+### Bug Fixes
+
+* **ci:** Fix github actions release workflow ([e721fef](https://github.com/r2d2bzh/js-rules/commit/e721fef6d171b5dddc6660733569bd7e4c9e33fd))
+
 # [2.0.0](https://github.com/r2d2bzh/js-rules/compare/1.0.6...2.0.0) (2025-09-11)
 
 

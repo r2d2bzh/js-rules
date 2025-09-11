@@ -1,6 +1,6 @@
 {
   "name": "@r2d2bzh/js-rules",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "enforce r2d2bzh javascript rules",
   "bin": {
     "r2d2bzh-js-rules": "./bin.js"
