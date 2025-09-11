@@ -12,6 +12,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "pretest": "npm i",
     "test": "./bin.js && npm run lint",
     "release": "release-it"
   },
