@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/r2d2bzh/js-rules/compare/2.0.1...2.0.2) (2025-09-11)
+
+
+### Bug Fixes
+
+* **ci:** Fix package-lock issue ([5a90868](https://github.com/r2d2bzh/js-rules/commit/5a908686ecb064564ba34f01cace53ef6c2b779b))
+
 ## [2.0.1](https://github.com/r2d2bzh/js-rules/compare/2.0.0...2.0.1) (2025-09-11)
 
 
