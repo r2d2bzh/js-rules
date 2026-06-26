@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.0.0](https://github.com/r2d2bzh/js-rules/compare/2.0.2...3.0.0) (2026-06-26)
+
+
+### Features
+
+* **template.eslint.config:** add possibility to extend rules ([4a40a52](https://github.com/r2d2bzh/js-rules/commit/4a40a52e70f4e4801940e9202dfd0aa7c138f6cc))
+
 # [2.1.0](https://github.com/r2d2bzh/js-rules/compare/2.0.2...2.1.0) (2026-06-26)
 
 
