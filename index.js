@@ -1,16 +1,17 @@
-import { promises as fs } from 'node:fs';
+/* eslint-disable security/detect-non-literal-fs-filename */
+import { readFile, access, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { configure as configureHusky } from '@gautaz/husky';
-import yaml from 'js-yaml';
+import { dump } from 'js-yaml';
 import { findUp } from 'find-up';
 
 export const readJSONFile = async (path) => {
   try {
     // The purpose of this library is to scaffold based on existing project content
-    const json = await fs.readFile(path);
+    const json = await readFile(path, 'utf8');
     return JSON.parse(json);
   } catch (error) {
-    throw new Error(`failed to extract JSON from ${path} (${error.message})`);
+    throw new Error(`failed to extract JSON from ${path} (${error.message})`, { cause: error });
   }
 };
 
@@ -34,13 +35,13 @@ const jsRulesStrings = (logger) =>
     logger,
   });
 
-export const toYAML = (x) => yaml.dump(x);
+export const toYAML = (x) => dump(x);
 export const toMultiline = (array) => `${array.join('\n')}\n`;
 export const addHeader =
   (prefix = '', postfix = '\n') =>
   (header = '') => {
     const iterableHeader =
-      Symbol.iterator in new Object(header) && Object.prototype.toString.call(header) !== '[object String]'
+      Object.hasOwn(new Object(header), Symbol.iterator) && Object.prototype.toString.call(header) !== '[object String]'
         ? header
         : [header];
     let formattedHeader = '';
@@ -61,9 +62,7 @@ const prettierConfiguration = {
 const prettierIgnore = ['__fixtures__', 'helm', '*.json', '*.yml', '*.yaml'];
 
 const configurationFiles = async (addWarningHeader, addJsWarningHeader) => {
-  const eslintTemplate = await fs.readFile(
-    `${path.dirname(new URL(import.meta.url).pathname)}/template.eslint.config.js`,
-  );
+  const eslintTemplate = await readFile(`${path.dirname(new URL(import.meta.url).pathname)}/template.eslint.config.js`);
   return {
     'eslint.config.js': {
       configuration: eslintTemplate.toString(),
@@ -88,7 +87,7 @@ const setConfiguration = (logStep) => (files) =>
         content = format(content);
       }
       // The modified file location depends on the structure of the project being scaffolded
-      await fs.writeFile(configurationPath, content);
+      await writeFile(configurationPath, content);
       logStep(`${configurationPath} deployed`);
     }),
   );
@@ -121,7 +120,7 @@ const setHuskyHooks = (logger) => {
 
 const fileExists = async (path) => {
   try {
-    await fs.access(path);
+    await access(path);
     return true;
   } catch {
     return false;
@@ -131,15 +130,15 @@ const fileExists = async (path) => {
 const showEslintWarning = async (logger) => {
   if ((await fileExists('.eslintrc.yaml')) || (await fileExists('.eslintignore')))
     logger.warn(
-      '\x1b[33m!! Please remove .eslintrc.yaml and .eslintignore files which are now ignored by Eslint v9 !!\x1b[0m',
+      '\u{1B}[33m!! Please remove .eslintrc.yaml and .eslintignore files which are now ignored by Eslint v9 !!\u{1B}[0m',
     );
 };
 
 const _install = async ({ editWarning, tweakConfigurationFiles = (f) => f, tweakHuskyHooks = (h) => h, logger }) => {
   try {
     const logStep = (...arguments_) => logger.log(...arguments_);
-    const confFiles = await configurationFiles(addHashedHeader(editWarning), addSlashHeader(editWarning));
-    await setConfiguration(logStep)(await tweakConfigurationFiles(confFiles));
+    const configFiles = await configurationFiles(addHashedHeader(editWarning), addSlashHeader(editWarning));
+    await setConfiguration(logStep)(await tweakConfigurationFiles(configFiles));
     setHuskyHooks(logger)(await tweakHuskyHooks(huskyHooks));
     await showEslintWarning(logger);
     logger.log('successfully deployed');

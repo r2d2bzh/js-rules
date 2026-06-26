@@ -1,8 +1,26 @@
+// Rules override should be written in eslint.extra-config.js :
+// export default [
+//   {
+//     rules: {
+//       'no-unused-vars': 'off',
+//     },
+//   },
+// ];
+
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'eslint/config';
 import r2d2bzhEslintConfig from '@r2d2bzh/eslint-config';
+
+let extraConfig = [];
+
+if (existsSync('./eslint.extra-config.js')) {
+  const { default: localConfiguration } = await import('./eslint.extra-config.js');
+  extraConfig = localConfiguration;
+}
 
 export default defineConfig([
   {
     extends: [r2d2bzhEslintConfig],
   },
+  ...extraConfig,
 ]);
