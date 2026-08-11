@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.2](https://github.com/r2d2bzh/js-rules/compare/3.0.1...3.0.2) (2026-08-11)
+
+### Bug Fixes
+
+* **pre-push:** invalid typescript check ([b8c131b](https://github.com/r2d2bzh/js-rules/commit/b8c131ba26cfe0d94d72ce73247c17fdc44979cc))
+
 ## [3.0.1](https://github.com/r2d2bzh/js-rules/compare/3.0.0...3.0.1) (2026-08-11)
 
 ### Features
