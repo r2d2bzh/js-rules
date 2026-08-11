@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.1](https://github.com/r2d2bzh/js-rules/compare/3.0.0...3.0.1) (2026-08-11)
+
+### Features
+
+* **pre-push:** add typescript check to pre-push git hook ([ea16e3d](https://github.com/r2d2bzh/js-rules/commit/ea16e3d709c434b13394b2bb6d1aa1dae038d0ba))
+
 # [4.0.0](https://github.com/r2d2bzh/js-rules/compare/3.0.0...4.0.0) (2026-08-11)
 
 ### Features
