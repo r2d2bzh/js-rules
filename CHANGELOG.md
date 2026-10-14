@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.4](https://github.com/r2d2bzh/js-rules/compare/3.0.3...3.0.4) (2026-10-14)
+
+### Bug Fixes
+
+* write each line of a multi-line header on its own line ([5510d57](https://github.com/r2d2bzh/js-rules/commit/5510d57ad44090c7ede4413983a56be183160478))
+
 ## [3.0.3](https://github.com/r2d2bzh/js-rules/compare/3.0.2...3.0.3) (2026-10-14)
 
 ### Bug Fixes
