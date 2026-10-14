@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.3](https://github.com/r2d2bzh/js-rules/compare/3.0.2...3.0.3) (2026-10-14)
+
+### Bug Fixes
+
+* **deps:** update dependencies ([ba11315](https://github.com/r2d2bzh/js-rules/commit/ba113151717dc5e6eed3478cc7ab1002ad87f806))
+* resolve module paths containing special characters ([11afe8f](https://github.com/r2d2bzh/js-rules/commit/11afe8f84505d4f8e65d8fce598e55db659f09bc)), closes [URL#pathname](https://github.com/URL/issues/pathname)
+* skip every pre-push check on work in progress branches ([85953fe](https://github.com/r2d2bzh/js-rules/commit/85953fe446a7a2fac0017a623520113e53f3b573))
+
 ## [3.0.2](https://github.com/r2d2bzh/js-rules/compare/3.0.1...3.0.2) (2026-08-11)
 
 ### Bug Fixes
