@@ -99,7 +99,8 @@ const lintCommand = 'npx --no-install eslint .';
 const huskyHooks = {
   'pre-commit': addAdocTag([lintCommand]),
   'pre-push': addAdocTag([
-    `npx --no-install r2d2bzh-js-rules isWIP || ${lintCommand} && npm test && for TS_DIR in $(find . -maxdepth 2 -type f -name tsconfig.json); do (cd $(dirname "$TS_DIR") &&  npx --no-install tsc --noEmit;) done`,
+    // The checks are grouped so that a work in progress branch skips all of them, not only the lint
+    `npx --no-install r2d2bzh-js-rules isWIP || { ${lintCommand} && npm test && for TS_DIR in $(find . -maxdepth 2 -type f -name tsconfig.json); do (cd $(dirname "$TS_DIR") && npx --no-install tsc --noEmit) || exit 1; done; }`,
   ]),
 };
 
