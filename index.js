@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { readFile, access, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { configure as configureHusky } from '@gautaz/husky';
 import { dump } from 'js-yaml';
 import { findUp } from 'find-up';
@@ -17,7 +18,7 @@ export const readJSONFile = async (path) => {
 
 export const extractPackageDetails = async ({ url, extract = (x) => x, logger }) => {
   try {
-    const packageJSONPath = await findUp('package.json', { cwd: path.dirname(new URL(url).pathname) });
+    const packageJSONPath = await findUp('package.json', { cwd: path.dirname(fileURLToPath(url)) });
     return extract(await readJSONFile(packageJSONPath));
   } catch (error) {
     logger.error(`Unable to get ${url} package details:`, error.message);
@@ -62,7 +63,7 @@ const prettierConfiguration = {
 const prettierIgnore = ['__fixtures__', 'helm', '*.json', '*.yml', '*.yaml'];
 
 const configurationFiles = async (addWarningHeader, addJsWarningHeader) => {
-  const eslintTemplate = await readFile(`${path.dirname(new URL(import.meta.url).pathname)}/template.eslint.config.js`);
+  const eslintTemplate = await readFile(path.join(import.meta.dirname, 'template.eslint.config.js'));
   return {
     'eslint.config.js': {
       configuration: eslintTemplate.toString(),
@@ -98,7 +99,8 @@ const lintCommand = 'npx --no-install eslint .';
 const huskyHooks = {
   'pre-commit': addAdocTag([lintCommand]),
   'pre-push': addAdocTag([
-    `npx --no-install r2d2bzh-js-rules isWIP || ${lintCommand} && npm test && for TS_DIR in $(find . -maxdepth 2 -type f -name tsconfig.json); do (cd $(dirname "$TS_DIR") &&  npx --no-install tsc --noEmit;) done`,
+    // The checks are grouped so that a work in progress branch skips all of them, not only the lint
+    `npx --no-install r2d2bzh-js-rules isWIP || { ${lintCommand} && npm test && for TS_DIR in $(find . -maxdepth 2 -type f -name tsconfig.json); do (cd $(dirname "$TS_DIR") && npx --no-install tsc --noEmit) || exit 1; done; }`,
   ]),
 };
 
