@@ -42,7 +42,8 @@ export const addHeader =
   (prefix = '', postfix = '\n') =>
   (header = '') => {
     const iterableHeader =
-      Object.hasOwn(new Object(header), Symbol.iterator) && Object.prototype.toString.call(header) !== '[object String]'
+      // Symbol.iterator is inherited by arrays, so it must not be looked up as an own property
+      typeof header?.[Symbol.iterator] === 'function' && Object.prototype.toString.call(header) !== '[object String]'
         ? header
         : [header];
     let formattedHeader = '';
